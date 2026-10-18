@@ -1,6 +1,6 @@
 # Immich — self-hosted Google Photos alternative (v3.3.3, server + machine learning + VectorChord Postgres + Valkey). Deploy on Railway with one click.
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/TEMPLATE_CODE)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/DQUxnw)
 
 [Immich](https://immich.app) ([immich-app/immich](https://github.com/immich-app/immich), AGPL-3.0) is a high-performance, self-hosted photo and video library: automatic backup from the iOS and Android apps, a timeline, albums and shared links, a map, memories, partner sharing, multiple users, and on-device-free AI features (CLIP smart search, face recognition, OCR, duplicate detection) that run on your own server. This template runs the **official** v3.3.3 images, pinned by tag **and** digest, on the upstream `docker-compose.yml` layout: **immich-server**, **immich-machine-learning** (CPU), Immich's **VectorChord Postgres** and **Valkey**. It needs **no deploy-time input**. Open the URL and create the admin account.
 
@@ -17,7 +17,7 @@
 | immich-server | `ghcr.io/immich-app/immich-server:v3.3.3@sha256:bae7664ff3aa4c2c1fcbdcdd86b40b105643c5f861f3e6a770fc760089f25862` | `2283` (public) | `/data` | API, web UI and background workers. Health `/api/server/ping` (600 s). No start command |
 | immich-machine-learning | `ghcr.io/immich-app/immich-machine-learning:v3.3.3@sha256:73915f07e1f4289ba45b174c58443db74cef47ddf502613f475fc5e52458ea42` | `3003` (private) | `/cache` | CPU inference (CLIP, buffalo_l faces, PP-OCR). Health `/ping`. No start command |
 | Postgres | `ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23` | `5432` (private) | `/var/lib/postgresql/data` (`PGDATA=/var/lib/postgresql/data/pgdata`) | Upstream image and digest. No start command |
-| Valkey | `docker.io/valkey/valkey:9.1.2@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d` | `6379` (private) | `/data` | BullMQ job queues. Start command below |
+| Valkey | `valkey/valkey:9.1.2@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d` | `6379` (private) | `/data` | BullMQ job queues. Docker Hub image, written without the `docker.io/` prefix (Railway's template generator rejects it). Start command below |
 
 **Valkey start command** (also in `railway/valkey-start-command.txt`). Railway replaces an image's ENTRYPOINT when a start command is set, so it calls the upstream entrypoint itself:
 ```
