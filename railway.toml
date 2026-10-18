@@ -1,0 +1,19 @@
+# Reference only. This template deploys the official Immich images directly (no build step);
+# the Railway marketplace template is generated from the live project in the dashboard.
+# These are the settings of the public `immich-server` service (API + web UI + microservices
+# workers in one container, as in the upstream docker-compose.yml for v3.3.3).
+# Machine learning, Postgres (VectorChord) and Valkey settings live in railway/*.toml.
+
+[build]
+image = "ghcr.io/immich-app/immich-server:v3.3.3@sha256:bae7664ff3aa4c2c1fcbdcdd86b40b105643c5f861f3e6a770fc760089f25862"
+
+[deploy]
+# No start command: keep the image ENTRYPOINT (tini -- /bin/bash -c) and CMD (start.sh),
+# which runs DB migrations on boot and starts the api + microservices workers.
+# Public domain targets port 2283 (IMMICH_PORT / PORT).
+healthcheckPath = "/api/server/ping"
+healthcheckTimeout = 600
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+# Uploads, thumbnails, encoded video, profile images and DB backups (IMMICH_MEDIA_LOCATION default).
+requiredMountPath = "/data"

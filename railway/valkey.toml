@@ -1,0 +1,12 @@
+# Valkey (Redis-compatible) for Immich's BullMQ job queues. Same image digest as the upstream
+# v3.3.3 docker-compose.yml (valkey 9.1.2). Private only.
+[build]
+image = "docker.io/valkey/valkey:9.1.2@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d"
+
+[deploy]
+# Railway replaces the image ENTRYPOINT when a start command is set, so call the upstream
+# docker-entrypoint.sh explicitly. Adds a generated password, RDB snapshots on the /data
+# volume, noeviction (BullMQ requirement) and a dual-stack bind for the private network.
+startCommand = "/bin/sh -c \"rm -rf /data/lost+found && exec docker-entrypoint.sh valkey-server --requirepass $REDIS_PASSWORD --save 60 1 --dir /data --maxmemory-policy noeviction --bind '* -::*'\""
+restartPolicyType = "ALWAYS"
+requiredMountPath = "/data"

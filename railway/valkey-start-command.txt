@@ -1,0 +1,1 @@
+/bin/sh -c "rm -rf /data/lost+found && exec docker-entrypoint.sh valkey-server --requirepass $REDIS_PASSWORD --save 60 1 --dir /data --maxmemory-policy noeviction --bind '* -::*'"

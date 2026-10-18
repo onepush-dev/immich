@@ -1,0 +1,14 @@
+# immich-machine-learning: CLIP smart search, face detection/recognition, OCR. CPU variant
+# (no -cuda/-openvino suffix). Private only, no domain. Models download on first use into /cache.
+[build]
+image = "ghcr.io/immich-app/immich-machine-learning:v3.3.3@sha256:73915f07e1f4289ba45b174c58443db74cef47ddf502613f475fc5e52458ea42"
+
+[deploy]
+# No start command: image runs `tini -- python -m immich_ml` (gunicorn on IMMICH_HOST:IMMICH_PORT).
+# IMMICH_HOST=[::] binds dual-stack for Railway's private network; PORT=3003 so the
+# Railway healthcheck probes the right port.
+healthcheckPath = "/ping"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+requiredMountPath = "/cache"
